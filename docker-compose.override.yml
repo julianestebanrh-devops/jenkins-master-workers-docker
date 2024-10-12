@@ -1,0 +1,59 @@
+version: "3.8"
+
+services:
+  jenkins_master:
+    build:
+      context: .
+      dockerfile: master/Dockerfile
+    privileged: true
+    user: root
+    environment:
+      - TZ=America/Bogota
+    restart: always
+    ports:
+      - 5000:8080
+      - 50000:50000
+    volumes:
+      - $PWD/master/jenkins_home/:/var/jenkins_home
+      - $PWD/master/jenkins_backup:/var/jenkins_persistence
+      - /var/run/docker.sock:/var/run/docker.sock
+
+  jenkins_worker_1:
+    build:
+      context: .
+      dockerfile: worker_1/Dockerfile
+    ports:
+      - "5001:22" # Mapea el puerto SSH
+    volumes:
+      - $PWD/worker_1/jenkins_home:/home/jenkins_home # Puedes montar un volumen para persistir datos de Jenkins
+      - /var/run/docker.sock:/var/run/docker.sock
+    restart: always
+    mem_limit: 2GB # Limita el uso de memoria a 512 megabytes
+    deploy:
+      resources:
+        limits:
+          memory: 2GB
+        reservations:
+          memory: 1GB
+    #storage_opt:
+    #  size: 2G  # Limita el espacio en disco a 1 gigabyte
+
+  jenkins_worker_2:
+    build:
+      context: .
+      dockerfile: worker_2/Dockerfile
+    ports:
+      - "5002:22" # Mapea el puerto SSH
+    volumes:
+      - $PWD/worker_2/jenkins_home:/home/jenkins_home # Puedes montar un volumen para persistir datos de Jenkins
+      - /var/run/docker.sock:/var/run/docker.sock
+    restart: always
+    mem_limit: 2GB # Limita el uso de memoria a 512 megabytes
+    deploy:
+      resources:
+        limits:
+          memory: 2GB
+        reservations:
+          memory: 1GB
+    #storage_opt:
+    #  size: 2G  # Limita el espacio en disco a 1 gigabyte

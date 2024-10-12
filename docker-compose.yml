@@ -1,0 +1,23 @@
+version: '3.8'
+
+services:
+
+  jenkins_master:
+    container_name: jenkins_master
+    networks:
+      - global_network
+
+  jenkins_worker_1:
+    container_name: jenkins_worker_1
+    networks:
+      - global_network
+
+  jenkins_worker_2:
+    container_name: jenkins_worker_2
+    networks:
+      - global_network
+
+networks:
+  global_network:
+    name: global_network
+    external: true

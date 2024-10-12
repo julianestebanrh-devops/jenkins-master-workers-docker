@@ -1,0 +1,8 @@
+master/jenkins_home
+master/jenkins_persistance
+
+worker_1/jenkins_home
+worker_1/jenkins_persistance
+
+worker_2/jenkins_home
+worker_2/jenkins_persistance
